@@ -3,7 +3,12 @@ Matchers for collections.
 """
 from __future__ import absolute_import
 
-import collections
+try:
+    import collections.abc
+    abc = collections.abc
+except ImportError:
+    import collections
+    abc = collections
 import inspect
 
 from callee._compat import OrderedDict as _OrderedDict
@@ -71,7 +76,7 @@ class CollectionMatcher(BaseMatcher):
 class Iterable(CollectionMatcher):
     """Matches any iterable."""
 
-    CLASS = collections.Iterable
+    CLASS = abc.Iterable
 
     def __init__(self):
         # Unfortunately, we can't allow an ``of`` argument to this matcher.
@@ -113,7 +118,7 @@ class Sequence(CollectionMatcher):
 
     A sequence is an iterable that has a length and can be indexed.
     """
-    CLASS = collections.Sequence
+    CLASS = abc.Sequence
 
 
 class List(CollectionMatcher):
@@ -125,7 +130,7 @@ class List(CollectionMatcher):
 class Set(CollectionMatcher):
     """Matches a :class:`set` of given items."""
 
-    CLASS = collections.Set
+    CLASS = abc.Set
 
 
 # TODO: Tuple matcher, with of= that accepts a tuple of matchers
@@ -243,7 +248,7 @@ class MappingMatcher(CollectionMatcher):
 class Mapping(MappingMatcher):
     """Matches a mapping of given items."""
 
-    CLASS = collections.Mapping
+    CLASS = abc.Mapping
 
 
 class Dict(MappingMatcher):
